@@ -3,7 +3,7 @@
 [![Tests](https://github.com/joshhubert-dsp/park-it/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/joshhubert-dsp/park-it/actions/workflows/test.yml) [![PyPI](https://img.shields.io/pypi/v/park-it?logo=pypi&logoColor=white&color=3776AB&label=PyPi)](https://pypi.org/project/park-it/) ![Python](https://img.shields.io/pypi/pyversions/park-it?logo=python&logoColor=white&color=3776AB&label=Python) [![Docs](https://img.shields.io/badge/Docs-526CFE?logo=MaterialForMkDocs&logoColor=white)](https://joshhubert-dsp.github.io/park-it/)
 
 A lightweight framework for rapidly building parking space monitor web apps. Built on
-Mkdocs-Material, implemented as a Mkdocs plugin. Designed for use with inductive car
+Mkdocs-Material, implemented as a Mkdocs plugin. Designed for use with parked car
 sensors, it will work with any web-connected sensor system that can fire a json payload at
 your endpoint.
 
