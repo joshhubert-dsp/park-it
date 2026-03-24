@@ -91,6 +91,10 @@ markdown_extensions:
 
 nav:
   - Home: index.md
+  - Update Model Generation: model-gen.md
+  - Google Mail Setup: gmail-setup.md
+  - CLI: cli.md
+  - Code Reference: reference/
 
 extra:
   social:

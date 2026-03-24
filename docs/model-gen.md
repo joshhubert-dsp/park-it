@@ -30,5 +30,5 @@ datamodel-codegen \
 
 Here's a working example for the parked car sensor I'm using:
 ```python
---8<-- "src/park_it/models/nwave_parking_sensor_update.py"
+--8<-- "../src/park_it/models/nwave_parking_sensor.py"
 ```
