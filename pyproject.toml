@@ -1,7 +1,7 @@
 [project]
 name = "park-it"
 dynamic = ["version"]
-description = "A lightweight framework for rapidly building parking space monitor web apps using parked car sensors. Built on Mkdocs-Material, implemented as a Mkdocs plugin."
+description = "A framework for rapidly building parking space monitor web apps using parked car sensors. Built on Mkdocs-Material, implemented as a Mkdocs plugin."
 readme = "README.md"
 authors = [
     { name = "joshhubert-dsp", email = "102703352+joshhubert-dsp@users.noreply.github.com" },
