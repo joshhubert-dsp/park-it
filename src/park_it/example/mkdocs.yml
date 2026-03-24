@@ -1,0 +1,36 @@
+site_name: set this in app-config.yaml
+site_dir: !ENV [PARK_IT_SITE_DIR, site]
+# site_url:
+
+theme:
+  name: material
+  font:
+    text: Roboto
+
+  palette:
+    # System Preference
+    - media: "(prefers-color-scheme)"
+      primary: blue
+      accent: deep purple
+      toggle:
+        icon: material/lightbulb-on-50
+        name: "Using system preference. Switch to dark mode"
+    # Dark Mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: blue
+      accent: deep purple
+      toggle:
+        icon: material/lightbulb-on-outline
+        name: "Using dark mode. Switch to light mode."
+    # Light Mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: blue
+      accent: deep purple
+      toggle:
+        icon: material/lightbulb-on
+        name: "Using light mode. Switch to system preference."
+
+plugins:
+  - park-it

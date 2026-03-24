@@ -1,0 +1,100 @@
+site_name: park-it
+site_url: https://joshhubert-dsp.github.io/park-it/
+repo_url: https://github.com/joshhubert-dsp/park-it
+
+theme:
+  name: material
+  font:
+    text: DM Sans
+    code: Red Hat Mono
+  # TODO figure out light/dark mode autofill
+  # logo: assets/calendar-alert.svg
+  # favicon: assets/calendar-alert.svg
+  icon:
+    # Use the GitHub brand icon from Font Awesome
+    repo: simple/github
+  # icon:
+  #   logo: custom/calendar-alert
+  palette:
+    # System Preference
+    - media: "(prefers-color-scheme)"
+      primary: blue
+      accent: deep purple
+      toggle:
+        icon: material/lightbulb-on-50
+        name: "Using system preference. Switch to dark mode"
+    # Dark Mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: blue
+      accent: deep purple
+      toggle:
+        icon: material/lightbulb-on-outline
+        name: "Using dark mode. Switch to light mode."
+    # Light Mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: blue
+      accent: deep purple
+      toggle:
+        icon: material/lightbulb-on
+        name: "Using light mode. Switch to system preference."
+
+  features:
+    - content.tabs.link
+    - content.code.copy
+    - navigation.sections
+    - navigation.expand
+    - navigation.path
+    - navigation.tracking
+
+plugins:
+  - search
+  - mkdocs-typer2:
+      pretty: true
+  - gen-files:
+      scripts:
+        - docs/gen_docs.py
+  - literate-nav:
+      nav_file: SUMMARY.md
+  - mkdocstrings:
+      enabled: !ENV [ENABLE_MKDOCSTRINGS, true]
+      # custom_templates: templates
+      default_handler: python
+      locale: en
+      handlers:
+        python:
+          paths: [../src]
+          options:
+            show_source: false
+            docstring_style: google
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - attr_list
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+      options:
+        custom_icons:
+          - .icons
+  - pymdownx.tabbed:
+      alternate_style: true
+  - admonition
+  - pymdownx.details
+
+nav:
+  - Home: index.md
+
+extra:
+  social:
+    - icon: simple/github
+      link: https://github.com/joshhubert-dsp/park-it
+extra_css:
+  - stylesheets/extra.css

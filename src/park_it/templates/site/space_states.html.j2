@@ -1,0 +1,64 @@
+<!-- htmx parking space status update template -->
+
+<ul id="space-counts" class="state-ui" hx-swap-oob="true">
+{% for t in total_spaces.keys() %}
+    <li>
+        <span class="bold-fixed">{{ t | emoji }} &nbsp;&nbsp; {{ t }}: </span>
+        <span class={% if free_spaces[t] == 0 %} "pi-state-occupied" {% else %} "pi-state-available" {% endif %}>
+                {{ free_spaces[t] }} / {{ total_spaces[t] }} free
+        </span>
+        {% if (median_usage | length > 0) and (t in median_usage) %}
+        <span>
+            free {{ median_usage[t].free | duration_str }}, occupied {{ median_usage[t].occupied | duration_str}}
+        </span>
+        {% endif %}
+    </li>
+{% endfor %}
+</ul>
+
+{% if space_states | length > 0 %}
+<ul id="space-states" class="state-ui" hx-swap-oob="true">
+{% for state in space_states %}
+    <li>
+        <span class="bold-fixed">{{ state.type | emoji }} &nbsp;&nbsp; {{ state.label }}: </span>
+        {% if state.state == "occupied" %}
+            <span class="pi-state-occupied"> OCCUPIED </span>
+            <span> {{ state.seconds_since_last_update() | duration_str }} elapsed </span>
+        {% elif state.state == "free" %}
+            <span class="pi-state-available"> FREE </span>
+            <span> {{ state.seconds_since_last_update() | duration_str }} elapsed </span>
+        {% else %}
+            <span class="pi-state-occupied"> OUT OF ORDER </span>
+        {% endif %}
+    </li>
+{% endfor %}
+</ul>
+{% endif %}
+
+{% if wait_lens | length > 0 %}
+<ul id="space-waits" class="state-ui" hx-swap-oob="true">
+{% for t in total_spaces.keys() %}
+    <li>
+        <span class="bold-fixed">{{ t | emoji }} &nbsp;&nbsp; {{ t }}: </span>
+        {% if wait_lens[t] == 0 %}
+            <span> line is empty </span>
+
+        {% elif wait_lens[t] >= 1 %}
+            {% if wait_lens[t] == 1 %}
+                <span> 1 person in line, </span>
+            {% elif wait_lens[t] > 1 %}
+                <span> {{ wait_lens[t] }} people in line, </span>
+            {% endif %}
+            {% if (wait_times | length > 0) and (t in wait_times) %}
+                <span 
+                 title="Estimated wait times are computed as the worst case (where everyone gets their slot): # waiting x (median time occupied + median time free) / # spaces"
+                >
+                estimated worst case wait {{ wait_times[t] | duration_str }} 
+                </span>
+            {% endif %}
+        {% endif %}
+
+    </li>
+{% endfor %}
+</ul>
+{% endif %}

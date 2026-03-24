@@ -1,0 +1,19 @@
+You are **{{ waitlist_place }}{{ waitlist_place | get_place_int_suffix }}** in
+line for a **{{ entry.space_type | upper }}** space.
+
+- When a space becomes free, people are popped off the waitlist every 
+**{{ config.waitlist_interval_minutes }} minutes** and notified via email. The idea is that 
+each person is given that long to claim the space before forfeiting it to the next person in line.
+
+- When all spaces become occupied again, you will receive a courtesy email letting you 
+know.
+
+- **Making it off the waitlist does not guarantee you a spot.**
+This system uses inductive car sensors that can only determine whether a 
+hunk of metal is sitting above them. These sensors have no way of determining whether 
+that hunk of metal is your car, and so can't verify/enforce that you in particular got the space.
+
+- If you no longer need a space, please go back to the [waitlist]({{ config.app_url }}/app) and click the
+**Leave** button to remove yourself. The next person in line will thank you!
+
+{% include 'email/_salutation.md.j2'%}

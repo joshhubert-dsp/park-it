@@ -1,0 +1,40 @@
+name: update README
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  update-readme:
+    if: github.actor != 'trusty-pushbot[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create GitHub App token
+        uses: actions/create-github-app-token@v2.2.1
+        id: app-token
+        with:
+          app-id: ${{ secrets.TRUSTY_PUSHBOT_ID }}
+          private-key: ${{ secrets.TRUSTY_PUSHBOT_PRIVATE_KEY }}
+
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          # force a full checkout to ensure git context
+          fetch-depth: 0
+          ref: ${{ github.head_ref }}
+          # persist-credentials: false
+
+      - name: Run Markdown Autodocs
+        uses: dineshsonachalam/markdown-autodocs@v1.0.7
+        with:
+          commit_author: trusty-pushbot[bot] <trusty-pushbot[bot]@users.noreply.github.com>
+          commit_message: "trusty-pushbot: updated README with source includes"
+          output_file_paths: "[./README.md]"
+          # Categories to sync or transform contents in the markdown files.
+          # Defaults to '[code-block,json-to-html-table,workflow-artifact-table]'
+          categories: "[code-block]"

@@ -1,0 +1,8 @@
+<!-- htmx waitlist response template that writes a message in a green/red box -->
+
+<div
+    class="pi-response-box {% if error %}pi-response-box-error{% else %}pi-response-box-success{% endif %}"
+>
+    {{ message | e | replace('\n', '<br />') | safe }}
+</div>
+

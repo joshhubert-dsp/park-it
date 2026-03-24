@@ -1,0 +1,103 @@
+<h2 class="pi-subtitle"> Waitlist </h2>
+
+<div class="card" style="margin-bottom: 2rem;">
+
+  <!-- <div style="font-size: 0.75rem;" class="pi-response-box pi-response-box-info"> -->
+    <p>
+      When a space becomes free, people are notified off the waitlist at 
+      {{ page.meta.config.waitlist_interval_minutes }} minute intervals.
+      When all spaces become occupied, they are notified again as a courtesy.
+      Making it off the waitlist does not guarantee you a space.
+    </p>
+  <!-- </div> -->
+
+  <!-- htmx injects success/error message here -->
+  <div id="result">
+    <ul id="space-waits" class="state-ui">
+      {% for t in page.meta.config.space_counter %}
+        <li> <span class="bold-fixed">{{ t | emoji }} &nbsp;&nbsp; {{ t }}: </span> loading... </li>
+      {% endfor %}
+    </ul>
+  </div>
+  <!-- {% if page.meta.config.store_usage_durations %}
+    <p>
+      Estimated wait times are computed as the worst case (where everyone gets their slot): <br>
+      <i> # waiting x (median time occupied + median time free) / # spaces </i>
+    </p>
+  {% endif %} -->
+
+  <form
+    method="post"
+    id="waitlist-form"
+    class="waitlist-form-layout"
+  >
+    <div class="form-input">
+      <label for="email" class="form-field"> Email </label>
+      <input
+        type="email"
+        name="email"
+        id="email"
+        class="form-box"
+        title="You'll receive a confirmation email when you join and another email when it's your turn."
+        required
+      >
+    </div>
+
+    <div class="form-input">
+      <label for="password" class="form-field"> Password </label>
+      <input
+        type="password"
+        name="password"
+        id="password"
+        class="form-box"
+        title="A shared password is required to join the waitlist. You should have received it over private channels."
+        required
+      >
+    </div>
+
+    <div class="form-input"
+      {% if page.meta.config.space_counter | length == 1 %}
+        style="display: none"
+      {% endif %}
+    >
+      <label for="space_type" class="form-field"> Space Type </label>
+      <select 
+        name="space_type" 
+        id="space_type"
+        class="form-box" 
+        title="The type of space you want."
+        required
+      >
+        {% for t in page.meta.config.space_counter.keys() %}
+          <option value="{{ t }}">{{ t }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="form-button-row">
+      <button
+        type="button"
+        hx-post="/waitlist-form/join"
+        hx-target="#result"
+        hx-swap="innerHTML"
+        hx-include="#waitlist-form"
+        title="Join the waitlist. You'll receive an email once a space of the chosen type becomes free."
+        class="submit-button button-join"
+      >
+        Join
+      </button>
+      
+      <button
+        type="button"
+        hx-post="/waitlist-form/leave"
+        hx-target="#result"
+        hx-swap="innerHTML"
+        hx-include="#waitlist-form"
+        title="Leave the waitlist. You will no longer be notified."
+        class="submit-button button-leave"
+      >
+        Leave
+      </button>
+    </div>
+  </form>
+</div>

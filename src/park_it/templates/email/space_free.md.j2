@@ -1,0 +1,9 @@
+You made it off the waitlist: a **{{ entry.space_type | upper }}** space is now available for
+you.
+
+- You have **{{ config.waitlist_interval_minutes }}** minutes to take the space,
+before the next person in line is notified.
+
+- When all spaces become occupied again, you will receive another email letting you know. 
+
+{% include 'email/_salutation.md.j2'%}

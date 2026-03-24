@@ -1,0 +1,66 @@
+# FastAPI app title, and displayed site title
+title: Park-It Example
+# FastAPI app description, and displayed site subtitle
+description: Parking space availability web app.
+# App version
+version: 0.1.0
+# App email address that users receive waitlist email notifications from
+app_email: app@email.com
+# Optional name attached to app_email for the email payload
+app_email_name: Peter Parker
+# Hosted URL, for adding a link in email notifications
+app_url: http://localhost:8000
+# Optionally, add a separate contact email address that users can badger about any issues with
+# the system. It will be listed at the bottom of the webpage and in email notifications.
+contact_email: peterparker@email.com
+
+# The id, user-friendly label and type for each individual parking space, with spaces
+# listed in desired display order.
+spaces:
+  - sensor_id: dev1
+    label: "1A"
+    type: compact
+  - sensor_id: dev2
+    label: "1B"
+    type: compact
+  - sensor_id: dev3
+    label: "1C"
+    type: standard
+  - sensor_id: dev4
+    label: "1D"
+    type: standard
+  - sensor_id: dev5
+    label: "1E"
+    type: motorcycle
+  - sensor_id: dev6
+    label: "1F"
+    type: handicap
+  - sensor_id: dev7
+    label: "1G"
+    type: EV charger
+  - sensor_id: dev8
+    label: "1H"
+    type: EV charger
+    out_of_order: true # an out-of-order space will ignore update messages
+
+# Whether to show the "Spaces" section of the page with individual space occupancy and durations.
+show_individual_spaces: True
+# Whether to store occupied and free durations for computing median duration and wait-time estimates.
+store_usage_durations: True
+# The number of most recent duration values to compute medians over.
+usage_median_num: 100
+# Whether to activate the email waitlist functionality, and show the waitlist form on
+# the page.
+waitlist: True
+# Number of minutes to wait after a space becomes free before sending the first waitlist email
+# notification, to guard against noise from someone just adjusting their position.
+waitlist_free_debounce_minutes: 1
+# Number of minutes between sending each next waitlist notification while spaces are free.
+waitlist_interval_minutes: 15
+
+# Optionally, specify a descriptive image of the parking lot to display on the
+# webpage. Must be a path relative to project root.
+image:
+  path: aerial-view-of-a-parking-lot-in-austin-in-need-of-repair.jpg
+  caption: from https://lonestarpavingtx.com/common-reasons-to-consider-parking-lot-repair-in-austin/
+  pixel_width: 800

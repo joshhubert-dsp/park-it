@@ -1,0 +1,89 @@
+{% extends "pi_base.html.j2" %}
+
+{% block pi_content %}
+
+<!-- <h1 class="pi-title">  {{ page.meta.config.title }} </h1> -->
+<h3 class="pi-description"> {{ page.meta.config.description }}</h3>
+
+<!-- Hidden HTMX load trigger applies out-of-band updates to space counts/states. -->
+<div
+  hx-get="/space/get-states-html"
+  hx-trigger="load"
+  hx-swap="none"
+></div>
+
+<!-- Hidden HTMX SSE listener applies out-of-band updates to space counts/states. -->
+<div
+  hx-ext="sse"
+  sse-connect="/space/events"
+  sse-swap="message"
+  hx-swap="none"
+  style="display: none"
+></div>
+
+<!-- STATUS INFO -->
+
+<!-- prefill the state boxes with the space configs -->
+<h2 class="pi-subtitle"> Totals </h2>
+<div class="card">
+  <ul id="space-counts" class="state-ui">
+    {% for t in page.meta.config.space_counter %}
+      <li> <span class="bold-fixed">{{ t | emoji }} &nbsp;&nbsp; {{ t }}: </span> loading... </li>
+    {% endfor %}
+  </ul>
+  {% if page.meta.config.store_usage_durations %}
+    <div style="font-size: 0.75rem; margin-top: 1rem;"> Median times displayed. </div>
+  {% endif %}
+</div>
+
+{% if page.meta.config.show_individual_spaces %}
+  <h2 class="pi-subtitle"> Spaces </h2>
+  <div class="card">
+    <ul id="space-states" class="state-ui">
+    {% for sp in page.meta.config.spaces %}
+        <li> <span class="bold-fixed">{{ sp.type | emoji }} &nbsp;&nbsp; {{ sp.label }}: </span> loading... </li>
+    {% endfor %}
+    </ul>
+  </div>
+{% endif %}
+
+
+<!-- WAITLIST FORM -->
+{% if page.meta.config.waitlist %}
+  {% include "_waitlist_form.html.j2"%}
+{% endif %}
+
+
+<!-- IMAGE -->
+{% if page.meta.config.image %}
+    <!-- <div class="card" style="display: flex; justify-content: center;"> -->
+    <img
+      src="{{ page.meta.image_path | url }}"
+      title="{{ page.meta.image_name }}"
+      alt="{{ page.meta.config.image['caption'] }}"
+      width="{{ page.meta.config.image['pixel_width'] or '' }}"
+      height="{{ page.meta.config.image['pixel_height'] or '' }}"
+      style="display: block; margin: 0 auto;"
+    >
+    <!-- </div> -->
+{% endif %}
+
+
+<!-- CONTACT EMAIL -->
+{% if page.meta.config.contact_email %}
+    <p> 
+        Contact 
+
+        <button
+          type="button"
+          class="contact-email-button"
+          onclick="navigator.clipboard.writeText(this.textContent)"
+        >
+          {{ page.meta.config.contact_email }}
+        </button>
+
+        to report issues (click to copy). 
+    </p>
+{% endif %}
+
+{% endblock %}
