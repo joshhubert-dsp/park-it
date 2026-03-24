@@ -88,7 +88,74 @@ The steps to build a parking monitor system website for your organization/commun
 
 5.  Modify the config file `app-config.yaml` to suit your needs. Example:
     <!-- MARKDOWN-AUTO-DOCS:START (CODE:src=src/park_it/example/app-config.yaml) -->
+    <!-- The below code snippet is automatically added from src/park_it/example/app-config.yaml -->
     ```yaml
+    # FastAPI app title, and displayed site title
+    title: Park-It Example
+    # FastAPI app description, and displayed site subtitle
+    description: Parking space availability web app.
+    # App version
+    version: 0.1.0
+    # App email address that users receive waitlist email notifications from
+    app_email: app@email.com
+    # Optional name attached to app_email for the email payload
+    app_email_name: Peter Parker
+    # Hosted URL, for adding a link in email notifications
+    app_url: http://localhost:8000
+    # Optionally, add a separate contact email address that users can badger about any issues with
+    # the system. It will be listed at the bottom of the webpage and in email notifications.
+    contact_email: peterparker@email.com
+    
+    # The id, user-friendly label and type for each individual parking space, with spaces
+    # listed in desired display order.
+    spaces:
+      - sensor_id: dev1
+        label: "1A"
+        type: compact
+      - sensor_id: dev2
+        label: "1B"
+        type: compact
+      - sensor_id: dev3
+        label: "1C"
+        type: standard
+      - sensor_id: dev4
+        label: "1D"
+        type: standard
+      - sensor_id: dev5
+        label: "1E"
+        type: motorcycle
+      - sensor_id: dev6
+        label: "1F"
+        type: handicap
+      - sensor_id: dev7
+        label: "1G"
+        type: EV charger
+      - sensor_id: dev8
+        label: "1H"
+        type: EV charger
+        out_of_order: true # an out-of-order space will ignore update messages
+    
+    # Whether to show the "Spaces" section of the page with individual space occupancy and durations.
+    show_individual_spaces: True
+    # Whether to store occupied and free durations for computing median duration and wait-time estimates.
+    store_usage_durations: True
+    # The number of most recent duration values to compute medians over.
+    usage_median_num: 100
+    # Whether to activate the email waitlist functionality, and show the waitlist form on
+    # the page.
+    waitlist: True
+    # Number of minutes to wait after a space becomes free before sending the first waitlist email
+    # notification, to guard against noise from someone just adjusting their position.
+    waitlist_free_debounce_minutes: 1
+    # Number of minutes between sending each next waitlist notification while spaces are free.
+    waitlist_interval_minutes: 15
+    
+    # Optionally, specify a descriptive image of the parking lot to display on the
+    # webpage. Must be a path relative to project root.
+    image:
+      path: aerial-view-of-a-parking-lot-in-austin-in-need-of-repair.jpg
+      caption: from https://lonestarpavingtx.com/common-reasons-to-consider-parking-lot-repair-in-austin/
+      pixel_width: 800
     ```
     <!-- MARKDOWN-AUTO-DOCS:END -->
 
@@ -118,7 +185,36 @@ The steps to build a parking monitor system website for your organization/commun
 10. Write a simple python script to define custom form input validation, and then build
     the dynamic web app from the Mkdocs build:
     <!-- MARKDOWN-AUTO-DOCS:START (CODE:src=src/park_it/example/server_example.py) -->
+    <!-- The below code snippet is automatically added from src/park_it/example/server_example.py -->
     ```py
+    """
+    Example Park-It server program.
+    
+    - `DummySpaceUpdate` is a placeholder space update model class that will work with
+    `tests/mock_updater_client.py` for testing purposes. You must create a model for
+    your sensor's update payload.
+    - if PROJECT ROOT is your current working dir, the commented out Path args
+    are the defaults.
+    """
+    
+    from pathlib import Path
+    
+    import uvicorn
+    
+    from park_it.app.build_app import build_app
+    from park_it.models.space_update import DummySpaceUpdate
+    
+    PROJECT_ROOT = Path(__file__).parent
+    
+    if __name__ == "__main__":
+        app = build_app(
+            space_update_model=DummySpaceUpdate,
+            # app_config=PROJECT_ROOT / "app-config.yaml",
+            # sqlite_dir=PROJECT_ROOT / "sqlite-dbs",
+            # google_token_path=PROJECT_ROOT / "auth-token.json",
+            # site_dir=PROJECT_ROOT / "site",
+        )
+        uvicorn.run(app, host="127.0.0.1", port=8000)
     ```
     <!-- MARKDOWN-AUTO-DOCS:END -->
 
