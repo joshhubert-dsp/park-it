@@ -78,10 +78,13 @@ class DummySpaceUpdate(SpaceUpdateBaseModel):
     dt: AwareDatetime
 
     def sensor_id(self) -> LowerStr:
+        """Returns `self.id`."""
         return self.id
 
     def occupied(self) -> bool:
+        """Returns `self.occ`."""
         return self.occ
 
     def update_time(self) -> AwareDatetime:
+        """Returns `self.dt`."""
         return self.dt

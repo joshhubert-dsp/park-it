@@ -1,7 +1,7 @@
 # Generating the Space Update Model
 
 You must create a subclass of `SpaceUpdateBaseModel` for the update payload of the
-specific parked car sensor you are deploying. This subclass is passed to `build_app()`
+specific car sensor you are deploying. This subclass is passed to `build_app()`
 and is used to automatically validate payloads that hit the `space/update-state` endpoint.
 
 It is recommended to use the excellent tool
@@ -28,7 +28,7 @@ datamodel-codegen \
 --disable-timestamp
 ```
 
-Here's a working example for the parked car sensor I'm using:
-```python
---8<-- "../src/park_it/models/nwave_parking_sensor.py"
+Here's a working example for the car sensor I'm using:
+```py title="nwave_parking_sensor.py"
+--8<-- "src/park_it/models/nwave_parking_sensor.py"
 ```
