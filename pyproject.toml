@@ -81,9 +81,6 @@ local_scheme = "no-local-version"
 
 [tool.setuptools.package-data]
 park_it = [
-    "app/templates/**/*", 
-    "mkdocs_abuse/**/*", 
-    "example/**/*",
     "example/.gitignore",
 ]
 

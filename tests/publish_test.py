@@ -20,9 +20,16 @@ def main() -> None:
         "mkdocs_abuse/templates/pi_base.html.j2",
         "example/docs/readme.md",
         "example/.gitignore",
-        "example/aerial-view-of-a-parking-lot-in-austin-in-need-of-repair.jpg"
+        "example/aerial-view-of-a-parking-lot-in-austin-in-need-of-repair.jpg",
         "example/app-config.yaml",
         "example/mkdocs.yml",
+        "templates/site/space_states.html.j2",
+        "templates/site/waitlist_response.html.j2",
+        "templates/email/join_confirm.md.j2",
+        "templates/email/leave_confirm.md.j2",
+        "templates/email/space_occupied.md.j2",
+        "templates/email/_salutation.md.j2",
+        "templates/email/space_free.md.j2",
     ]
     for f in nonpy_files_to_check:
         assert (files("park_it") / f).is_file(), f"Missing file in package data: {f}"
@@ -33,7 +40,13 @@ def main() -> None:
 
     env = get_jinja_env()
     # Will raise TemplateNotFound if broken
-    env.get_template("space_states.html.j2")
+    env.get_template("site/space_states.html.j2")
+    env.get_template("site/waitlist_response.html.j2")
+    env.get_template("email/join_confirm.md.j2")
+    env.get_template("email/leave_confirm.md.j2")
+    env.get_template("email/space_occupied.md.j2")
+    env.get_template("email/_salutation.md.j2")
+    env.get_template("email/space_free.md.j2")
 
     # 4) MkDocs plugin entry point resolves
     eps = metadata.entry_points(group="mkdocs.plugins")
