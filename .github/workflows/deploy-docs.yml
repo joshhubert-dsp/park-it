@@ -42,4 +42,4 @@ jobs:
           uv sync --group docs
 
       - name: Unleash the Docs!
-        run: mkdocs gh-deploy --force
+        run: uv run mkdocs gh-deploy --force
