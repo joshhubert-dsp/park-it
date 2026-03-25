@@ -1,4 +1,4 @@
-name: Deploy Docs
+name: Test, Update, Deploy Docs
 on:
   push:
     branches:
@@ -7,7 +7,16 @@ permissions:
   contents: write
 
 jobs:
+  test:
+    uses: ./.github/workflows/test.yml
+    secrets: inherit
+
+  update-readme:
+    uses: ./.github/workflows/update-readme.yml
+    secrets: inherit
+
   deploy-docs:
+    needs: [test, update-readme]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

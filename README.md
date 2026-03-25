@@ -7,28 +7,6 @@ Mkdocs-Material, implemented as a Mkdocs plugin. Designed for use with parked ca
 sensors, it will work with any web-connected sensor system that can fire a json payload at
 your endpoint.
 
-## Motivation / LoRa Digression
-
-The motivating use case for this framework was monitoring EV charger availability in my apartment complex.
-I was tired of having to drive all the way to the top of the parking structure to check if the vintage (non-app-enabled) EV
-chargers there were available. There are only 2 of them so usually they weren't.
-
-I ended up getting a little carried away and discovering the awesome LoRa transmission
-technology: it is designed for IoT devices that don't need to transmit a lot of data,
-works in the unlicencsed radio band around 900 MHz (in the US), and sports extremely low power
-consumption and a range of up to 3 miles in urban areas. Check it out if you haven't
-heard of it, it's rad, and a perfect fit for parked car sensors in a lot or garage. 
-
-The organization [The Things Network](https://www.thethingsnetwork.org/) provides an open source implementation of
-the internet connectivity portion for LoRa (the LoRaWAN protocol), and have made their
-service free for hobbyist use, with a global network of public LoRa gateways available. This makes it very
-straightforward to connect your devices if a gateway is in range. The system I built this for for uses this [LoRa-based car
-sensor](https://www.thethingsnetwork.org/device-repository/devices/nwave/nps405sm/) and
-The Things Network LoRaWAN stack with integrated webhook functionality. The batteries in
-those Nwave sensors are supposed to last 10 years!
-
-Anyway, I am very excited about this technology, and I hope this project serves as an
-inspiring, or at least titillating, example of a bootleg infrastructure solution it enables.
 
 ## Features
 
@@ -44,15 +22,43 @@ inspiring, or at least titillating, example of a bootleg infrastructure solution
 -   Provides the option to store space usage duration history (both occupied and free
     durations). When this is enabled, the UI shows median usage times for different
     space types, and estimates the worst case wait times for the waitlist.
+    TODO compute other statistics.
 -   Persistent state for the parking spaces, waitlist and usage duration history is
     accomplished using minimal sqlite databases.
--   All app configuration is ergonomically defined in an `app-config.yaml` file.
+-   App configuration is ergonomically defined in an `app-config.yaml` file.
 -   As a Mkdocs plugin, it makes use of Mkdocs-Material for the frontend build, and so
     you can easily add static pages as markdown files and customize site aesthetics with
     tools from the Mkdocs ecosystem in `mkdocs.yml`. The default config includes a
     light/dark mode toggle that respects user system settings by default.
 
 ![example app screenshot](./example-app.png)
+
+
+## Motivation / LoRa Digression
+
+The motivating use case for this framework was monitoring EV charger availability in my apartment complex.
+I was tired of having to drive all the way to the top of the parking structure to check if the vintage (non-app-enabled) EV
+chargers there were available.
+
+I ended up getting a little carried away and discovering the awesome LoRa transmission
+technology: it is designed for IoT devices that don't need to transmit a lot of data,
+works in the unlicencsed radio band around 900 MHz in the US, and sports extremely low power
+consumption and a range of up to 3 miles in urban areas. Check it out, it's rad, and a
+perfect fit for parked car sensors in a lot or garage. 
+
+The organization [The Things Network](https://www.thethingsnetwork.org/) provides an
+open source implementation of the internet connectivity portion for LoRa (the LoRaWAN
+protocol), and have made their service free for hobbyist use, with a global network of
+public LoRa gateways available. This makes it very straightforward to connect your
+devices if a gateway is in range. The system I built this framework for uses this
+[LoRa-based car
+sensor](https://www.thethingsnetwork.org/device-repository/devices/nwave/nps405sm/) and
+The Things Network LoRaWAN stack with integrated webhook functionality. The batteries in
+those Nwave sensors are supposed to last 10 years!
+
+Anyway, I am very excited about this technology, and I hope this project serves as an
+inspiring, or at least titillating, example of a bootleg infrastructure solution it enables.
+
 
 ## Basic Setup
 
@@ -220,5 +226,3 @@ The steps to build a parking monitor system website for your organization/commun
 
 11. Host the app somewhere accessible to your community, and disseminate the shared
     waitlist password through communication channels.
-
-

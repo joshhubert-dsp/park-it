@@ -1,12 +1,9 @@
-# This workflow will install Python dependencies, lint and run tests.
-# For more information see: https://docs.github.com/en/actions/use-cases-and-examples/building-and-testing/building-and-testing-python
-
+# NOTE: called from both deploy-docs and publish-pypi to enforce ordering and guard
+# against bad deployments
 name: Tests
 
 on:
-  push:
-    branches:
-      - main
+  workflow_call:
   pull_request:
     branches:
       - main

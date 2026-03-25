@@ -82,6 +82,7 @@ local_scheme = "no-local-version"
 [tool.setuptools.package-data]
 park_it = [
     "example/.gitignore",
+    "example/.env.example",
 ]
 
 [tool.pytest.ini_options]

@@ -1,12 +1,9 @@
+# NOTE: called from both deploy-docs and publish-pypi to enforce ordering and guard
+# against bad deployments
 name: update README
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+  workflow_call:
 
 jobs:
   update-readme:

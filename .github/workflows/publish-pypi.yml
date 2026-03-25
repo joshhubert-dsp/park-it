@@ -1,0 +1,62 @@
+name: "Test, Update, Publish to PyPi"
+
+on:
+  push:
+    tags:
+      # Publish on any tag starting with a `v`, e.g., v0.1.0
+      - v*
+
+jobs:
+  test:
+    uses: ./.github/workflows/test.yml
+    secrets: inherit
+
+  update-readme:
+    uses: ./.github/workflows/update-readme.yml
+    secrets: inherit
+
+  publish:
+    needs: [test, update-readme]
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/park-it
+    permissions:
+      id-token: write
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Install Python 3.13
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          version: "0.10.9"
+          enable-cache: true
+
+      - name: Build
+        run: uv build
+
+      # Check that basic features work and we didn't miss including crucial files
+      - name: Smoke test (wheel)
+        run: uv run --isolated --no-project --with dist/*.whl tests/publish_test.py
+
+      - name: Smoke test (source distribution)
+        run: uv run --isolated --no-project --with dist/*.tar.gz tests/publish_test.py
+
+      - name: Publish
+        run: uv publish
+
+      - name: Create GitHub Release
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          tag="${{ github.ref_name }}"
+          gh release view "$tag" >/dev/null 2>&1 || \
+          gh release create "$tag" dist/*.whl dist/*.tar.gz --title "$tag" --verify-tag --fail-on-no-commits --notes-from-tag
