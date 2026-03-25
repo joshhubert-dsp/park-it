@@ -1,4 +1,4 @@
-# park-it
+# park-it!
 
 [![Tests](https://github.com/joshhubert-dsp/park-it/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/joshhubert-dsp/park-it/actions/workflows/test.yml) [![PyPI](https://img.shields.io/pypi/v/park-it?logo=pypi&logoColor=white&color=3776AB&label=PyPi)](https://pypi.org/project/park-it/) ![Python](https://img.shields.io/pypi/pyversions/park-it?logo=python&logoColor=white&color=3776AB&label=Python) [![Docs](https://img.shields.io/badge/Docs-526CFE?logo=MaterialForMkDocs&logoColor=white)](https://joshhubert-dsp.github.io/park-it/)
 
