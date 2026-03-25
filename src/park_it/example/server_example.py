@@ -15,7 +15,9 @@ import uvicorn
 from park_it.app.build_app import build_app
 from park_it.models.space_update import DummySpaceUpdate
 
-# python-dotenv package recommended for setting env var `PARK_IT_WAITLIST_PASSWORD` in dev mode
+# NOTE: python-dotenv package is recommended for setting the environment variable
+# `PARK_IT_WAITLIST_PASSWORD` in dev mode
+
 # from dotenv import load_dotenv
 # load_dotenv()
 
