@@ -5,7 +5,7 @@ specific car sensor you are deploying. This subclass is passed to `build_app()`
 and is used to automatically validate payloads that hit the `space/update-state` endpoint.
 
 It is recommended to use the excellent tool
-(datamodel-code-generator)[https://github.com/koxudaxi/datamodel-code-generator] to
+[datamodel-code-generator](https://github.com/koxudaxi/datamodel-code-generator) to
 automatically generate the pydantic model from a json payload.
 
 I like running it with these options:
