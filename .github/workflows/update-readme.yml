@@ -7,7 +7,7 @@ on:
 
 jobs:
   update-readme:
-    if: github.actor != 'trusty-pushbot[bot]'
+    # if: github.actor != 'trusty-pushbot[bot]'
     runs-on: ubuntu-latest
     steps:
       - name: Create GitHub App token
@@ -30,7 +30,7 @@ jobs:
         uses: dineshsonachalam/markdown-autodocs@v1.0.7
         with:
           commit_author: trusty-pushbot[bot] <trusty-pushbot[bot]@users.noreply.github.com>
-          commit_message: "trusty-pushbot: updated README with source includes"
+          commit_message: "trusty-pushbot: update README with source includes [skip ci]"
           output_file_paths: "[./README.md]"
           # Categories to sync or transform contents in the markdown files.
           # Defaults to '[code-block,json-to-html-table,workflow-artifact-table]'
