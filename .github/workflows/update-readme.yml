@@ -3,7 +3,9 @@
 name: update README
 
 on:
-  workflow_call:
+  push:
+    branches:
+      - main
 
 jobs:
   update-readme:

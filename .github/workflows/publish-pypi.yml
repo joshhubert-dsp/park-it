@@ -11,12 +11,8 @@ jobs:
     uses: ./.github/workflows/test.yml
     secrets: inherit
 
-  update-readme:
-    uses: ./.github/workflows/update-readme.yml
-    secrets: inherit
-
   publish:
-    needs: [test, update-readme]
+    needs: [test]
     runs-on: ubuntu-latest
     environment:
       name: pypi
