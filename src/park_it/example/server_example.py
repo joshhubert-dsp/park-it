@@ -16,7 +16,7 @@ from park_it.app.build_app import build_app
 from park_it.models.space_update import DummySpaceUpdate
 
 # NOTE: python-dotenv package is recommended for setting the environment variable
-# `PARK_IT_WAITLIST_PASSWORD` in dev mode
+# `PARK_IT_WAITLIST_PASSWORD` for development
 
 # from dotenv import load_dotenv
 # load_dotenv()
