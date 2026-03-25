@@ -211,7 +211,7 @@ The steps to build a parking monitor system website for your organization/commun
     from park_it.models.space_update import DummySpaceUpdate
     
     # NOTE: python-dotenv package is recommended for setting the environment variable
-    # `PARK_IT_WAITLIST_PASSWORD` in dev mode
+    # `PARK_IT_WAITLIST_PASSWORD` for development
     
     # from dotenv import load_dotenv
     # load_dotenv()
