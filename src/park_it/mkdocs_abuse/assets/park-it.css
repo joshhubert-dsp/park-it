@@ -14,27 +14,12 @@
     text formatting
    ========================= */
 
-/* .pi-root .pi-title {
-  justify-self: center;
-  margin: 0 0 0.5em;
-  font-size: 1.875rem;
-  line-height: 1rem;
-  font-weight: 600;
-} */
 
 .pi-root .pi-description {
   /* margin-left: 1rem;
   margin-right: 1rem; */
   font-size: 1rem;
   line-height: 1rem;
-}
-
-.pi-root .pi-subtitle {
-  justify-self: center;
-  /* margin: 0rem; */
-  /* font-weight: 800; */
-  /* padding-bottom: 0.5rem; */
-  /* white-space: pre; */
 }
 
 .pi-root .state-ui {

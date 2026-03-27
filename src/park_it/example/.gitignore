@@ -3,3 +3,4 @@
 **/client-secret.json
 sqlite-dbs
 site
+.env

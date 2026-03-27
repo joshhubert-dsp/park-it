@@ -64,7 +64,7 @@ inspiring, or at least titillating, example of a bootleg infrastructure solution
 
 The steps to build a parking monitor system website for your organization/community:
 
-0.  Determine a suitable parked car sensor and update delivery system for your needs. I heartily recommend the
+0.  Determine a suitable parked car sensor and update payload delivery system for your needs. I heartily recommend the
     Nwave sensor linked above and The Things Network if LoRa connectivity is feasible for you.
 
 1.  If you want to enable the email waitlist, make a dedicated Google account
@@ -80,19 +80,19 @@ The steps to build a parking monitor system website for your organization/commun
 4.  If you like what you see, run `park-it init` to copy the necessary structure
     directly from the package's `example` directory into your current working 
     directory. If you have a `.gitignore` file already in your directory, the
-    recommended default ignores will be appended. Now you'll have the following
-    structure:
+    recommended default ignores will be appended. Now you'll have the following files:
     ```
     .
     ├── .gitignore
     ├── app-config.yaml
     ├── docs
     │ └── readme.md
+    ├── .env.example
     ├── mkdocs.yml
     └── server_example.py
     ```
 
-5.  Modify the config file `app-config.yaml` to suit your needs. Example:
+5.  Modify the config file `app-config.yaml` to suit your application. Example:
     <!-- MARKDOWN-AUTO-DOCS:START (CODE:src=src/park_it/example/app-config.yaml) -->
     <!-- The below code snippet is automatically added from src/park_it/example/app-config.yaml -->
     ```yaml
@@ -167,17 +167,20 @@ The steps to build a parking monitor system website for your organization/commun
 
 6.  Create a subclass of
     (`SpaceUpdateBaseModel`)[https://joshhubert-dsp.github.io/park-it/reference/space_update]
-    for the specific shape of your car sensor update payload. See [here](https://joshhubert-dsp.github.io/park-it/model-gen) for
-    instructions on how to autogenerate this.
+    for the specific shape of your chosen car sensor update payload. See
+    [here](https://joshhubert-dsp.github.io/park-it/model-gen) 
+    for instructions on how to autogenerate this.
 
 7.  If you want to enable the email waitlist, assign a shared password that your users must
     enter using the environment variable `PARK_IT_WAITLIST_PASSWORD`. 
 
-8.  Modify the default Mkdocs config file `mkdocs.yml` to suit your aesthetic needs.
+8.  Modify the default Mkdocs config file `mkdocs.yml` to suit your fancy.
     Also if you want additional static pages added to your site, you can add them as
     markdown files under `docs` in standard Mkdocs fashion. `mkdocs.yml` must include
     the following fields:
     ```yaml
+    site_name: REQUIRED PLACEHOLDER, set this using the `title` field in app-config.yaml
+
     theme:
       name: material
 
@@ -185,11 +188,12 @@ The steps to build a parking monitor system website for your organization/commun
       - park-it
     ```
 
-9.  Build the static portion of the site with `mkdocs build`. It will build to the
-    directory `site` by (Mkdocs) default.
+9.  Build the site frontend with `mkdocs build`. By default, it will build to the
+    directory `site`. If you're using the default `mkdocs.yml` file, you can select an
+    alternate build directory by setting the environment variable `PARK_IT_SITE_DIR`.
 
-10. Write a simple python script to define custom form input validation, and then build
-    the dynamic web app from the Mkdocs build:
+10. Write a simple main script to build the dynamic web app from the Mkdocs build and
+    run it. You must run the app using an ASGI server. I recommend `uvicorn`. Example:
     <!-- MARKDOWN-AUTO-DOCS:START (CODE:src=src/park_it/example/server_example.py) -->
     <!-- The below code snippet is automatically added from src/park_it/example/server_example.py -->
     ```py

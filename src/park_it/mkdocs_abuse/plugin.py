@@ -115,7 +115,6 @@ class ParkItPlugin(BasePlugin[ParkItPluginConfig]):
         self.root_path = self.cfg.app_config.parent
         config["site_name"] = self.app_config.title
 
-        # self._extract_templates(config)
         config["extra_javascript"] += REMOTE_JS
 
         if self.cfg.assets_enabled:

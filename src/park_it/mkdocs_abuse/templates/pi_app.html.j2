@@ -2,7 +2,6 @@
 
 {% block pi_content %}
 
-<!-- <h1 class="pi-title">  {{ page.meta.config.title }} </h1> -->
 <h3 class="pi-description"> {{ page.meta.config.description }}</h3>
 
 <!-- Hidden HTMX load trigger applies out-of-band updates to space counts/states. -->
@@ -24,7 +23,7 @@
 <!-- STATUS INFO -->
 
 <!-- prefill the state boxes with the space configs -->
-<h2 class="pi-subtitle"> Totals </h2>
+<h2> Totals </h2>
 <div class="card">
   <ul id="space-counts" class="state-ui">
     {% for t in page.meta.config.space_counter %}
@@ -37,7 +36,7 @@
 </div>
 
 {% if page.meta.config.show_individual_spaces %}
-  <h2 class="pi-subtitle"> Spaces </h2>
+  <h2> Spaces </h2>
   <div class="card">
     <ul id="space-states" class="state-ui">
     {% for sp in page.meta.config.spaces %}
@@ -71,7 +70,7 @@
 
 <!-- CONTACT EMAIL -->
 {% if page.meta.config.contact_email %}
-    <p> 
+    <p style="margin-top: 1rem;">
         Contact 
 
         <button

@@ -1,4 +1,4 @@
-<h2 class="pi-subtitle"> Waitlist </h2>
+<h2> Waitlist </h2>
 
 <div class="card" style="margin-bottom: 2rem;">
 
@@ -77,7 +77,7 @@
     <div class="form-button-row">
       <button
         type="button"
-        hx-post="/waitlist-form/join"
+        hx-post="/waitlist/join"
         hx-target="#result"
         hx-swap="innerHTML"
         hx-include="#waitlist-form"
@@ -89,7 +89,7 @@
       
       <button
         type="button"
-        hx-post="/waitlist-form/leave"
+        hx-post="/waitlist/leave"
         hx-target="#result"
         hx-swap="innerHTML"
         hx-include="#waitlist-form"

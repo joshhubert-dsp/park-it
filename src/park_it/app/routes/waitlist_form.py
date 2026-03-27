@@ -15,14 +15,12 @@ from park_it.services.db.waitlist_db import JoinedListAlready
 WAITLIST_RESPONSE_TEMPLATE = "site/waitlist_response.html.j2"
 
 # --- RESOURCE ENDPOINT FUNCTIONS ---
-waitlist_form_router = APIRouter(prefix="/waitlist-form")
+waitlist_form_router = APIRouter(prefix="/waitlist")
 
 
 # TODO is it kosher to join the waitlist pre-emptively even if the space of your desired
 # type is currently free? Thinking could make sense in contexts such as someone wanting
 # to reserve for the evening during the day while they're at work.
-# The issue with allowing this is that a user will be popped off immediately if the
-# waitlist job is already running
 
 
 def validate_request(form) -> WaitlistRequest:

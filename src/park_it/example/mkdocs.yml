@@ -1,4 +1,5 @@
-site_name: set this in app-config.yaml
+site_name: REQUIRED PLACEHOLDER, set this using the `title` field in app-config.yaml
+# env var is recommended if non-default site_dir is desired
 site_dir: !ENV [PARK_IT_SITE_DIR, site]
 # site_url:
 

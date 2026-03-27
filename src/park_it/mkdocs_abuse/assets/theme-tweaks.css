@@ -1,8 +1,6 @@
 /* TODO part these out for easy switching from config args */
 
-
 /* hide top right logo button */
-/* TODO make this optional with a config arg */
 .md-header__button.md-logo {
   display: none !important;
 }
