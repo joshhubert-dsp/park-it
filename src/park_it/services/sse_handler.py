@@ -171,13 +171,15 @@ class SSEHandler:
     def response(
         self,
         ping_seconds: int = 15,
-        shutdown_grace_period: float = 0.0,
+        shutdown_grace_period: float = 0.5,
     ) -> EventSourceResponse:
         """Create the SSE response object for one connecting client.
 
         The response gets a dedicated shutdown event shared with `stream(...)`. When
         sse-starlette observes Uvicorn shutdown, it sets that event before cancelling
-        the response task group, which lets our generator stop cleanly first.
+        the response task group, which lets our generator stop cleanly first. Keep the
+        grace period non-zero so `_stream_response()` can send the terminating
+        `more_body=False` frame before the task group is cancelled.
         """
         shutdown_event = anyio.Event()
         return EventSourceResponse(
