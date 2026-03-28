@@ -1,12 +1,16 @@
-# Generating the Space Update Model
+# Space Update Model
 
-You must create a subclass of `SpaceUpdateBaseModel` for the update payload of the
-specific car sensor you are deploying. This subclass is passed to `build_app()`
-and is used to automatically validate payloads that hit the `space/update-state` endpoint.
+Whatever system you use to send parking space occupancy updates, it must send json payloads
+to your site's `/space/update-state` endpoint.
 
-It is recommended to use the excellent tool
+You must create a subclass of
+[`SpaceUpdateBaseModel`](https://joshhubert-dsp.github.io/park-it/reference/space_update/#park_it.models.space_update.SpaceUpdateBaseModel)
+for your specific update payload. This subclass is passed to [`build_app()`](reference/build_app.md)
+and is used to validate requests that hit the endpoint.
+
+I recommended using the excellent tool
 [datamodel-code-generator](https://github.com/koxudaxi/datamodel-code-generator) to
-automatically generate the pydantic model from a json payload.
+automatically generate the pydantic model from a real json payload for your system.
 
 I like running it with these options:
 ```bash
@@ -28,7 +32,7 @@ datamodel-codegen \
 --disable-timestamp
 ```
 
-Here's a working example for the car sensor I'm using:
+Here's a working example generated for the car sensor I'm using:
 ```py title="nwave_parking_sensor.py"
 --8<-- "src/park_it/models/nwave_parking_sensor.py"
 ```

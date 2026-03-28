@@ -4,7 +4,7 @@
 
 A framework for rapidly building parking space monitor web apps. Built on
 Mkdocs-Material, implemented as a Mkdocs plugin. Designed for use with parked car
-sensors, it will work with any web-connected sensor system that can fire a json payload at
+sensors, it will work with any web-connected system that can fire a json payload at
 your endpoint.
 
 
@@ -166,8 +166,8 @@ The steps to build a parking monitor system website for your organization/commun
     <!-- MARKDOWN-AUTO-DOCS:END -->
 
 6.  Create a subclass of
-    (`SpaceUpdateBaseModel`)[https://joshhubert-dsp.github.io/park-it/reference/space_update]
-    for the specific shape of your chosen car sensor update payload. See
+    [`SpaceUpdateBaseModel`](https://joshhubert-dsp.github.io/park-it/reference/space_update/#park_it.models.space_update.SpaceUpdateBaseModel)
+    matching your specific car sensor update payload shape. See
     [here](https://joshhubert-dsp.github.io/park-it/model-gen) 
     for instructions on how to autogenerate this.
 

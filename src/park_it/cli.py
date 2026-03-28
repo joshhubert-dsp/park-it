@@ -71,7 +71,7 @@ def oauth(
     ),
     token_write_path: FilePath | None = typer.Argument(
         None,
-        help="Path to write the generated token file to. If not passed, writes `auth-token.json` to the same parent directory as the client secret file.",
+        help="Path to write the generated token file to. If not passed, writes `auth-token.json` to the same directory as the client secret file.",
     ),
     port: int = typer.Option(REDIRECT_PORT, help="localhost port to serve on."),
 ):
