@@ -91,7 +91,7 @@ def test_response_returns_event_source_response():
     response = handler.response(ping_seconds=1)
 
     assert isinstance(response, EventSourceResponse)
-    assert getattr(response, "_shutdown_grace_period") == 0.5
+    assert response._shutdown_grace_period == 0.5
 
 
 @pytest.mark.anyio
