@@ -72,7 +72,11 @@ The steps to build a parking monitor system website for your organization/commun
     from that Gmail account. See
     [here](https://joshhubert-dsp.github.io/park-it/gmail-setup) for details.
 
-2.  Install the park-it package in your python environment with `pip install park-it` or `uv add park-it`.
+2.  Install the park-it package in your python environment with `pip install
+    "park-it[site-build]"` or `uv add "park-it[site-build]"`. 
+    - Note: The `site-build` extra bundles `mkdocs-material`, which is required for
+      the site frontend build but not used at runtime. If you're space-conscious at
+      runtime, you can safely remove and reinstall without the extra after building.
 
 3.  To see a non-functional example of the site frontend build template on `localhost:8000`,
     run `park-it serve-example`.
@@ -193,7 +197,7 @@ The steps to build a parking monitor system website for your organization/commun
     alternate build directory by setting the environment variable `PARK_IT_SITE_DIR`.
 
 10. Write a simple main script to build the dynamic web app from the Mkdocs build and
-    run it. You must run the app using an ASGI server. I recommend `uvicorn`. Example:
+    run it. You must run the app using `uvicorn`. Example:
     <!-- MARKDOWN-AUTO-DOCS:START (CODE:src=src/park_it/example/server_example.py) -->
     <!-- The below code snippet is automatically added from src/park_it/example/server_example.py -->
     ```py

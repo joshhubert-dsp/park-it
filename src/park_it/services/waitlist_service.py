@@ -23,17 +23,14 @@ from park_it.models.waitlist import WaitlistEntry
 def handle_waitlist_notification(
     updated_space: SpaceModel, deps: AppDependencies, job_ctx: ScheduledJobContext
 ) -> None:
-    # previous_space: SpaceModel,
 
     assert deps.wait_deps is not None
     wait_deps = deps.wait_deps
 
-    # previous_state = previous_space.state
     sensor_id = updated_space.sensor_id
     assert updated_space.type is not None
 
     if updated_space.state is SpaceState.FREE:
-        # and previous_state is SpaceState.OCCUPIED:
         num_waiting = wait_deps.to_notify_db.count(updated_space.type)
         if num_waiting == 0:
             logger.info(
@@ -45,7 +42,7 @@ def handle_waitlist_notification(
             minutes=deps.config.waitlist_free_debounce_minutes
         )
         logger.info(
-            f"{sensor_id}: space free occupied, scheduling waitlist interval notify job for {start_dt.isoformat(timespec='seconds')}"
+            f"{sensor_id}: space now free, scheduling waitlist interval notify job for {start_dt.isoformat(timespec='seconds')}"
         )
 
         wait_deps.job_scheduler.schedule_minutes_interval(
@@ -59,7 +56,6 @@ def handle_waitlist_notification(
         )
 
     elif updated_space.state is SpaceState.OCCUPIED:
-        #   and previous_state is SpaceState.FREE
         # If the space is now occupied, cancel the interval waitlist pop/alert job
         logger.info(
             f"{sensor_id}: space now occupied, canceling waitlist interval notify job"
