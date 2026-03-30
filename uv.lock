@@ -998,6 +998,7 @@ dev = [
 docs = [
     { name = "mkdocs-gen-files" },
     { name = "mkdocs-literate-nav" },
+    { name = "mkdocs-material" },
     { name = "mkdocs-typer2" },
     { name = "mkdocstrings-python" },
 ]
@@ -1040,6 +1041,7 @@ dev = [
 docs = [
     { name = "mkdocs-gen-files", specifier = ">=0.6.1" },
     { name = "mkdocs-literate-nav", specifier = ">=0.6.3" },
+    { name = "mkdocs-material", specifier = ">=9.7.6" },
     { name = "mkdocs-typer2", specifier = ">=0.2.0" },
     { name = "mkdocstrings-python", specifier = ">=2.0.3" },
 ]
