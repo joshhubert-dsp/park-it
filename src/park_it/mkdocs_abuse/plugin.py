@@ -12,9 +12,7 @@ from jinja2 import (
     select_autoescape,
 )
 from mkdocs.config import config_options
-from mkdocs.config.base import (
-    Config,
-)
+from mkdocs.config.base import Config
 from mkdocs.config.defaults import MkDocsConfig
 from mkdocs.exceptions import ConfigurationError
 from mkdocs.plugins import BasePlugin

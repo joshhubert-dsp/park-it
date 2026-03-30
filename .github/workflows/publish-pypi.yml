@@ -43,8 +43,22 @@ jobs:
       - name: Smoke test (wheel)
         run: uv run --isolated --no-project --with dist/*.whl tests/publish_test.py
 
+      - name: Smoke test (wheel, site-build extra)
+        run: |
+          pkg="$(echo dist/*.whl)"
+          uv run --isolated --no-project \
+            --with "park-it[site-build] @ file://${PWD}/${pkg}" \
+            tests/publish_test.py --check-site-build
+
       - name: Smoke test (source distribution)
         run: uv run --isolated --no-project --with dist/*.tar.gz tests/publish_test.py
+
+      - name: Smoke test (source distribution, site-build extra)
+        run: |
+          pkg="$(echo dist/*.tar.gz)"
+          uv run --isolated --no-project \
+            --with "park-it[site-build] @ file://${PWD}/${pkg}" \
+            tests/publish_test.py --check-site-build
 
       - name: Publish
         run: uv publish

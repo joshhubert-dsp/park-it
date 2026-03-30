@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import argparse
 import sys
 from importlib import metadata
 from importlib.resources import files
@@ -7,6 +8,14 @@ from importlib.resources import files
 
 def main() -> None:
     """test run by publish-pypi workflow on both sdist and wheel"""
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--check-site-build",
+        action="store_true",
+        help="Assert optional MkDocs plugin support is installed and loadable.",
+    )
+    args = parser.parse_args()
+
     # 1) Import
     import park_it  # noqa: F401
 
@@ -48,15 +57,14 @@ def main() -> None:
     env.get_template("email/_salutation.md.j2")
     env.get_template("email/space_free.md.j2")
 
-    # 4) MkDocs plugin entry point resolves
-    eps = metadata.entry_points(group="mkdocs.plugins")
-    ep = next((e for e in eps if e.name == "park-it"), None)
-    assert ep is not None, "mkdocs.plugins entry point 'park-it' not found"
-    plugin_cls = ep.load()
-    assert plugin_cls is not None, "entry point load returned None"
-
-    # Optional: assert it’s the class you expect
-    assert plugin_cls.__name__ == "ParkItPlugin"
+    if args.check_site_build:
+        # 4) MkDocs plugin entry point resolves when the optional site-build extra is installed
+        eps = metadata.entry_points(group="mkdocs.plugins")
+        ep = next((e for e in eps if e.name == "park-it"), None)
+        assert ep is not None, "mkdocs.plugins entry point 'park-it' not found"
+        plugin_cls = ep.load()
+        assert plugin_cls is not None, "entry point load returned None"
+        assert plugin_cls.__name__ == "ParkItPlugin"
 
     print("publish_test: ok", file=sys.stderr)
 
