@@ -18,10 +18,14 @@ def waitlist_db(sqlite_engine):
 
 
 def _waitlist_request(email: str) -> WaitlistRequest:
-    return WaitlistRequest(
-        password=cast(str, os.getenv("PARK_IT_WAITLIST_PASSWORD")),
-        email=email,
-        space_type=SpaceType.EV_CHARGER,
+    password = cast(str, os.getenv("PARK_IT_WAITLIST_PASSWORD"))
+    return WaitlistRequest.model_validate(
+        {
+            "password": password,
+            "email": email,
+            "space_type": SpaceType.EV_CHARGER,
+        },
+        context={"password": password},
     )
     # timestamp=timestamp or datetime(2026, 1, 1, 12, 0, 0),
 

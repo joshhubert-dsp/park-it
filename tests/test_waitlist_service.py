@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import asyncio
+import os
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from typing import cast
@@ -130,6 +131,7 @@ def _build_deps(
             notified_db=wait_an_db,
             emailer=RecordingEmailer(),
             job_scheduler=cast(JobScheduler, job_scheduler),
+            password=cast(str, os.getenv("PARK_IT_WAITLIST_PASSWORD")),
         ),
     )
     wait_deps = _get_wait_deps(deps)

@@ -47,8 +47,9 @@ def build_app(
     space_update_model: type[SpaceUpdateBaseModel],
     app_config: AppConfig | YamlPath | _Default = DEFAULT,
     sqlite_dir: DirectoryPath | _Default = DEFAULT,
-    google_token_path: FilePath | None | _Default = DEFAULT,
     site_dir: DirectoryPath | _Default = DEFAULT,
+    google_token_path: FilePath | None | _Default = DEFAULT,
+    waitlist_password_path: FilePath | None = None,
 ) -> FastAPI:
     """Build a configured parking status FastAPI application.
 
@@ -63,15 +64,20 @@ def build_app(
             to load one from. Defaults to `[CWD]/app-config.yaml`.
         sqlite_dir (DirectoryPath, optional): Directory where the app stores its SQLite databases. Defaults to
             `[CWD]/sqlite-dbs/`.
-        google_token_path (FilePath | None, optional): Path to the saved Google OAuth
-            token JSON file used for refresh and reauthentication. Only required if the
-            email waitlist feature is enabled. Defaults to `[CWD]/auth-token.json`.
         site_dir (DirectoryPath, optional): Directory containing the built static site
             to mount at `/`. If a non-default path is desired, it's recommended to not
             pass this argument and instead set the environment variable
             `PARK_IT_SITE_DIR`, which is used in the default `mkdocs.yml` config to
             specify the build directory. Defaults to the path specified by
             `PARK_IT_SITE_DIR` if set, else `[CWD]/site/`.
+        google_token_path (FilePath | None, optional): Path to the saved Google OAuth
+            token JSON file used for refresh and reauthentication. Only required if the
+            email waitlist feature is enabled. Defaults to `[CWD]/auth-token.json`.
+        waitlist_password_path (FilePath | None, optional): Path to a text file
+            containing your chosen shared waitlist password. You can also set this with
+            the environment variable `PARK_IT_WAITLIST_PASSWORD`, but a dedicated file
+            is more secure. Password is only required if the email waitlist feature is
+            enabled. Defaults to None.
 
     Returns:
         FastAPI: Configured application instance.
@@ -97,6 +103,7 @@ def build_app(
         app_config=app_config,
         sqlite_dir=sqlite_dir,
         google_token_path=google_token_path,
+        waitlist_password_path=waitlist_password_path,
     )
 
     app.add_exception_handler(
@@ -120,10 +127,13 @@ async def app_lifespan(
     config: AppConfig,
     sqlite_dir: DirectoryPath,
     google_token_path: FilePath | None,
+    waitlist_password_path: FilePath | None,
 ):
     """App lifespan used setting up reminder scheduler and for shutting down dbs."""
 
-    deps = AppDependencies.initialize(config, sqlite_dir, google_token_path)
+    deps = AppDependencies.initialize(
+        config, sqlite_dir, google_token_path, waitlist_password_path
+    )
     app.state.deps = deps
     if config.waitlist:
         app.state.job_ctx = ScheduledJobContext(config, sqlite_dir, google_token_path)
@@ -139,6 +149,7 @@ def _create_app(
     app_config: AppConfig,
     sqlite_dir: DirectoryPath,
     google_token_path: FilePath | None,
+    waitlist_password_path: FilePath | None,
 ) -> FastAPI:
     return FastAPI(
         title=app_config.title,
@@ -150,5 +161,6 @@ def _create_app(
             config=app_config,
             sqlite_dir=sqlite_dir,
             google_token_path=google_token_path,
+            waitlist_password_path=waitlist_password_path,
         ),
     )

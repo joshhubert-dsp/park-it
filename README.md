@@ -172,7 +172,7 @@ The steps to build a parking monitor system website for your organization/commun
     for instructions on how to autogenerate this.
 
 7.  If you want to enable the email waitlist, assign a shared password that your users must
-    enter using the environment variable `PARK_IT_WAITLIST_PASSWORD`. 
+    enter using either a text file or the environment variable `PARK_IT_WAITLIST_PASSWORD`. 
 
 8.  Modify the default Mkdocs config file `mkdocs.yml` to suit your fancy.
     Also if you want additional static pages added to your site, you can add them as

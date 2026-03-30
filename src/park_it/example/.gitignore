@@ -1,6 +1,7 @@
 # park-it plugin default directory ignores
 **/auth-token.json
 **/client-secret.json
-sqlite-dbs
-site
+**/waitlist-pw.txt
+**/sqlite-dbs
+**/site
 .env

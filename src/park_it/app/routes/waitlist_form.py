@@ -23,10 +23,8 @@ waitlist_form_router = APIRouter(prefix="/waitlist")
 # to reserve for the evening during the day while they're at work.
 
 
-def validate_request(form) -> WaitlistRequest:
-    form_dict = dict(form)
-    logger.debug(pformat(form_dict))
-    return WaitlistRequest.model_validate(form_dict)
+def validate_request(form, password: str) -> WaitlistRequest:
+    return WaitlistRequest.model_validate(dict(form), context={"password": password})
 
 
 @waitlist_form_router.post("/join", response_class=_TemplateResponse)
@@ -37,7 +35,7 @@ async def join_waitlist(
     wait_deps: WaitlistDependencies = Depends(get_wait_deps),
 ) -> _TemplateResponse:
     try:
-        entry = validate_request(await request.form()).to_entry()
+        entry = validate_request(await request.form(), wait_deps.password).to_entry()
     except ValidationError as e:
         return invalid_input_response(request, e, templates)
 
@@ -74,7 +72,7 @@ async def leave_waitlist(
     wait_deps: WaitlistDependencies = Depends(get_wait_deps),
 ) -> _TemplateResponse:
     try:
-        entry = validate_request(await request.form()).to_entry()
+        entry = validate_request(await request.form(), wait_deps.password).to_entry()
     except ValidationError as e:
         return invalid_input_response(request, e, templates)
 

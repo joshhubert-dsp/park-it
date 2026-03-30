@@ -94,6 +94,7 @@ class WaitlistDependencies:
     notified_db: WaitlistDatabase
     job_scheduler: JobScheduler
     emailer: Emailer
+    password: str
 
 
 @dataclass
@@ -112,7 +113,8 @@ class AppDependencies:
         cls,
         config: AppConfig,
         sqlite_dir: DirectoryPath,
-        google_token_path: FilePath | None = None,
+        google_token_path: FilePath | None,
+        waitlist_password_path: FilePath | None,
     ) -> Self:
 
         space_state_db = get_space_state_db(sqlite_dir, config.db_echo)
@@ -126,11 +128,17 @@ class AppDependencies:
             space_usage_db = None
 
         if config.waitlist:
-            if os.getenv("PARK_IT_WAITLIST_PASSWORD") is None:
+            pw: str | None = None
+            if waitlist_password_path is not None:
+                pw = waitlist_password_path.read_text("utf8")
+            else:
+                pw = os.getenv("PARK_IT_WAITLIST_PASSWORD")
+            if pw is None:
                 raise RuntimeError(
-                    "You must set a shared password for the waitlist form using the "
-                    "enviroment variable `PARK_IT_WAITLIST_PASSWORD` if you have "
-                    "activated email waitlist functionality."
+                    "Since you have activated email waitlist functionality, you must "
+                    "set a shared password for the waitlist form using either the "
+                    "argument `waitlist_password_path` or the "
+                    "enviroment variable `PARK_IT_WAITLIST_PASSWORD`."
                 )
 
             wait_tn_db = get_wait_tn_db(sqlite_dir, config.db_echo)
@@ -148,6 +156,7 @@ class AppDependencies:
                 notified_db=wait_an_db,
                 job_scheduler=job_scheduler,
                 emailer=emailer,
+                password=pw,
             )
         else:
             wait_deps = None

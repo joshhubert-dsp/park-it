@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import os
 from datetime import datetime
 from functools import cached_property
 from typing import Self
@@ -8,6 +7,7 @@ from typing import Self
 from pydantic import (
     BaseModel,
     EmailStr,
+    ValidationInfo,
     computed_field,
     model_validator,
 )
@@ -16,7 +16,6 @@ from sqlmodel import Field, SQLModel
 from park_it.models.space import SpaceType
 
 
-# TODO maybe allow for no password
 class WaitlistRequest(BaseModel):
     """Waitlist join/leave request submitted from the web form.
 
@@ -28,7 +27,7 @@ class WaitlistRequest(BaseModel):
     """
 
     email: EmailStr
-    password: str | None = Field(exclude=True)
+    password: str = Field(exclude=True)
     space_type: SpaceType
 
     @computed_field
@@ -42,10 +41,8 @@ class WaitlistRequest(BaseModel):
         return datetime.now()
 
     @model_validator(mode="after")
-    def check_password(self) -> Self:
-        if self.password is not None and self.password != os.getenv(
-            "PARK_IT_WAITLIST_PASSWORD"
-        ):
+    def check_password(self, info: ValidationInfo) -> Self:
+        if self.password != (info.context or {}).get("password"):
             raise ValueError("Invalid input")
         return self
 
