@@ -13,11 +13,11 @@
 
   <!-- htmx injects success/error message here -->
   <div id="result">
-    <ul id="space-waits" class="state-ui">
+    <div id="space-waits" class="state-grid">
       {% for t in page.meta.config.space_counter %}
-        <li> <span class="bold-fixed">{{ t | emoji }} &nbsp;&nbsp; {{ t }}: </span> loading... </li>
+        <div class="state-grid-item"> <span class="bold-fixed">{{ t | emoji }} &nbsp;&nbsp; {{ t }}: </span> loading... </div>
       {% endfor %}
-    </ul>
+    </div>
   </div>
   <!-- {% if page.meta.config.store_usage_durations %}
     <p>

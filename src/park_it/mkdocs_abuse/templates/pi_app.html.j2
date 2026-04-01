@@ -2,7 +2,7 @@
 
 {% block pi_content %}
 
-<h3 class="pi-description"> {{ page.meta.config.description }}</h3>
+<h3> {{ page.meta.config.description }}</h3>
 
 <!-- Hidden HTMX load trigger applies out-of-band updates to space counts/states. -->
 <div
@@ -25,24 +25,24 @@
 <!-- prefill the state boxes with the space configs -->
 <h2> Totals </h2>
 <div class="card">
-  <ul id="space-counts" class="state-ui">
+  <div id="space-counts" class="state-grid">
     {% for t in page.meta.config.space_counter %}
-      <li> <span class="bold-fixed">{{ t | emoji }} &nbsp;&nbsp; {{ t }}: </span> loading... </li>
+      <div class="state-grid-item"> <span class="bold-fixed">{{ t | emoji }} &nbsp;&nbsp; {{ t }}: </span> loading... </div>
     {% endfor %}
-  </ul>
+  </div>
   {% if page.meta.config.store_usage_durations %}
-    <div style="font-size: 0.75rem; margin-top: 1rem;"> Median times displayed. </div>
+    <div class="state-grid-note"> Median times displayed. </div>
   {% endif %}
 </div>
 
 {% if page.meta.config.show_individual_spaces %}
   <h2> Spaces </h2>
   <div class="card">
-    <ul id="space-states" class="state-ui">
+    <div id="space-states" class="state-grid">
     {% for sp in page.meta.config.spaces %}
-        <li> <span class="bold-fixed">{{ sp.type | emoji }} &nbsp;&nbsp; {{ sp.label }}: </span> loading... </li>
+        <div class="state-grid-item"> <span class="bold-fixed">{{ sp.type | emoji }} &nbsp;&nbsp; {{ sp.label }}: </span> loading... </div>
     {% endfor %}
-    </ul>
+    </div>
   </div>
 {% endif %}
 
@@ -55,7 +55,6 @@
 
 <!-- IMAGE -->
 {% if page.meta.config.image %}
-    <!-- <div class="card" style="display: flex; justify-content: center;"> -->
     <img
       src="{{ page.meta.image_path | url }}"
       title="{{ page.meta.image_name }}"
@@ -64,7 +63,6 @@
       height="{{ page.meta.config.image['pixel_height'] or '' }}"
       style="display: block; margin: 0 auto;"
     >
-    <!-- </div> -->
 {% endif %}
 
 

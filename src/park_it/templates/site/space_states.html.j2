@@ -1,8 +1,8 @@
 <!-- htmx parking space status update template -->
 
-<ul id="space-counts" class="state-ui" hx-swap-oob="true">
+<div id="space-counts" class="state-grid" hx-swap-oob="true">
 {% for t in total_spaces.keys() %}
-    <li>
+    <div class="state-grid-item">
         <span class="bold-fixed">{{ t | emoji }} &nbsp;&nbsp; {{ t }}: </span>
         <span class={% if free_spaces[t] == 0 %} "pi-state-occupied" {% else %} "pi-state-available" {% endif %}>
                 {{ free_spaces[t] }} / {{ total_spaces[t] }} free
@@ -12,14 +12,14 @@
             free {{ median_usage[t].free | duration_str }}, occupied {{ median_usage[t].occupied | duration_str}}
         </span>
         {% endif %}
-    </li>
+    </div>
 {% endfor %}
-</ul>
+</div>
 
 {% if space_states | length > 0 %}
-<ul id="space-states" class="state-ui" hx-swap-oob="true">
+<div id="space-states" class="state-grid" hx-swap-oob="true">
 {% for state in space_states %}
-    <li>
+    <div class="state-grid-item">
         <span class="bold-fixed">{{ state.type | emoji }} &nbsp;&nbsp; {{ state.label }}: </span>
         {% if state.state == "occupied" %}
             <span class="pi-state-occupied"> OCCUPIED </span>
@@ -30,15 +30,15 @@
         {% else %}
             <span class="pi-state-occupied"> OUT OF ORDER </span>
         {% endif %}
-    </li>
+    </div>
 {% endfor %}
-</ul>
+</div>
 {% endif %}
 
 {% if wait_lens | length > 0 %}
-<ul id="space-waits" class="state-ui" hx-swap-oob="true">
+<div id="space-waits" class="state-grid" hx-swap-oob="true">
 {% for t in total_spaces.keys() %}
-    <li>
+    <div class="state-grid-item">
         <span class="bold-fixed">{{ t | emoji }} &nbsp;&nbsp; {{ t }}: </span>
         {% if wait_lens[t] == 0 %}
             <span> line is empty </span>
@@ -58,7 +58,7 @@
             {% endif %}
         {% endif %}
 
-    </li>
+    </div>
 {% endfor %}
-</ul>
+</div>
 {% endif %}
