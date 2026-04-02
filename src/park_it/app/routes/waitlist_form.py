@@ -24,6 +24,7 @@ waitlist_form_router = APIRouter(prefix="/waitlist")
 
 
 def validate_request(form, password: str) -> WaitlistRequest:
+    # logger.info(pprint(dict(form)))
     return WaitlistRequest.model_validate(dict(form), context={"password": password})
 
 
@@ -35,7 +36,8 @@ async def join_waitlist(
     wait_deps: WaitlistDependencies = Depends(get_wait_deps),
 ) -> _TemplateResponse:
     try:
-        entry = validate_request(await request.form(), wait_deps.password).to_entry()
+        req = validate_request(await request.form(), wait_deps.password)
+        entry = req.to_entry()
     except ValidationError as e:
         return invalid_input_response(request, e, templates)
 
@@ -52,15 +54,21 @@ async def join_waitlist(
         )
         return denial_response(request, fail_msg, templates)
 
-    wait_deps.emailer.send_join_confirmation(
-        entry=entry, waitlist_place=place_num, config=config, jinja_env=templates.env
-    )
+    if req.confirmation_email:
+        wait_deps.emailer.send_join_confirmation(
+            entry=entry,
+            waitlist_place=place_num,
+            config=config,
+            jinja_env=templates.env,
+        )
 
     success_msg = Markup(
         f"<b><u>{entry.email}</u></b> joined the <b>{entry.space_type.upper()}</b> space waitlist: "
         f"<b>{place_num}{get_place_int_suffix(place_num)}</b> in line. "
-        f"You've been sent a confirmation email with more details."
     )
+    if req.confirmation_email:
+        success_msg += "You've been sent a confirmation email with more details."
+
     return success_response(request, success_msg, templates)
 
 
@@ -72,7 +80,8 @@ async def leave_waitlist(
     wait_deps: WaitlistDependencies = Depends(get_wait_deps),
 ) -> _TemplateResponse:
     try:
-        entry = validate_request(await request.form(), wait_deps.password).to_entry()
+        req = validate_request(await request.form(), wait_deps.password)
+        entry = req.to_entry()
     except ValidationError as e:
         return invalid_input_response(request, e, templates)
 
@@ -87,9 +96,10 @@ async def leave_waitlist(
             request, "This email is not present in the waitlist.", templates
         )
 
-    wait_deps.emailer.send_leave_confirmation(
-        entry=entry, config=config, jinja_env=templates.env
-    )
+    if req.confirmation_email:
+        wait_deps.emailer.send_leave_confirmation(
+            entry=entry, config=config, jinja_env=templates.env
+        )
 
     success_msg = Markup(f"<b><u>{entry.email}</u></b> left the waitlist.")
     return success_response(request, success_msg, templates)

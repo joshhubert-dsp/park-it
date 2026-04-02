@@ -29,6 +29,7 @@ class WaitlistRequest(BaseModel):
     email: EmailStr
     password: str = Field(exclude=True)
     space_type: SpaceType
+    confirmation_email: bool = Field(exclude=True)
 
     @computed_field
     @cached_property

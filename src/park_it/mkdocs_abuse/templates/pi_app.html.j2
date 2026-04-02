@@ -4,14 +4,15 @@
 
 <h3> {{ page.meta.config.description }}</h3>
 
-<!-- Hidden HTMX load trigger applies out-of-band updates to space counts/states. -->
+<!-- Hidden HTMX on-load trigger (out-of-band) -->
 <div
   hx-get="/space/get-states-html"
   hx-trigger="load"
   hx-swap="none"
+  style="display: none"
 ></div>
 
-<!-- Hidden HTMX SSE listener applies out-of-band updates to space counts/states. -->
+<!-- Hidden HTMX SSE listener for live space state updates (out-of-band) -->
 <div
   hx-ext="sse"
   sse-connect="/space/events"
@@ -61,13 +62,13 @@
       alt="{{ page.meta.config.image['caption'] }}"
       width="{{ page.meta.config.image['pixel_width'] or '' }}"
       height="{{ page.meta.config.image['pixel_height'] or '' }}"
-      style="display: block; margin: 0 auto;"
+      class="image-format"
     >
 {% endif %}
 
 
 <!-- CONTACT EMAIL -->
-{% if page.meta.config.contact_email %}
+{% if page.meta.config.contact_email is not none %}
     <p style="margin-top: 1rem;">
         Contact 
 

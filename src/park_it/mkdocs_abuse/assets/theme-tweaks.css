@@ -4,33 +4,20 @@
 .md-header__button.md-logo {
   display: none !important;
 }
+
 .md-nav__button.md-logo {
   display: none !important;
 }
+
 .md-nav__title {
   margin: 0 !important;
   margin-top: 0 !important;
   padding-top: 0 !important;
 }
+
 .md-nav.md-nav--primary {
   margin: 0 !important;
   margin-top: 0 !important;
 }
 
-
-/* TODO make these work */
-@media (min-width: 1200px) {
-    :root {
-        --md-sidebar-width: 4rem !important;
-        /* outline: 5px solid red; */
-    }
-}
-
-.md-main__inner {
-  grid-template-columns: auto 1fr !important;
-}
-
-.md-container {
-  max-width: 100% !important;
-}
 

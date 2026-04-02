@@ -71,7 +71,7 @@ class AppConfig(BaseModel):
     usage_median_num: int = 100
     waitlist: bool = True
     waitlist_free_debounce_minutes: NonNegativeInt = 1
-    waitlist_interval_minutes: PositiveInt = 15
+    waitlist_interval_minutes: PositiveInt = 20
     contact_email: EmailStr | None = None
     image: ImageFile | None = None
     db_echo: bool = False

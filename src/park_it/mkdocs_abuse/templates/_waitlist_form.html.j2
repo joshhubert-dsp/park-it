@@ -1,6 +1,6 @@
 <h2> Waitlist </h2>
 
-<div class="card" style="margin-bottom: 2rem;">
+<div class="card">
 
   <!-- <div style="font-size: 0.75rem;" class="pi-response-box pi-response-box-info"> -->
     <p>
@@ -19,12 +19,6 @@
       {% endfor %}
     </div>
   </div>
-  <!-- {% if page.meta.config.store_usage_durations %}
-    <p>
-      Estimated wait times are computed as the worst case (where everyone gets their slot): <br>
-      <i> # waiting x (median time occupied + median time free) / # spaces </i>
-    </p>
-  {% endif %} -->
 
   <form
     method="post"
@@ -72,6 +66,19 @@
           <option value="{{ t }}">{{ t }}</option>
         {% endfor %}
       </select>
+    </div>
+
+    <div class="form-check-box-stack">
+      <label for="confirmation_email" class="form-field"> Confirmation Email </label>
+      <input type="hidden" name="confirmation_email" value="false">
+      <input
+          type="checkbox"
+          name="confirmation_email"
+          id="confirmation_email"
+          class="check-box"
+          title="Check to receive a confirmation email with details."
+          value="true"
+      />
     </div>
 
     <div class="form-button-row">

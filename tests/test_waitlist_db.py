@@ -24,6 +24,7 @@ def _waitlist_request(email: str) -> WaitlistRequest:
             "password": password,
             "email": email,
             "space_type": SpaceType.EV_CHARGER,
+            "confirmation_email": True,
         },
         context={"password": password},
     )

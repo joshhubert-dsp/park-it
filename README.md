@@ -10,12 +10,13 @@ your endpoint.
 
 ## Features
 
+-   Space status updates are pushed to the browser in real time without requiring page
+    reload using SSE.
 -   Provides an optional email waitlist for notifying users when spaces become free.
     Users don't need to make accounts, they join simply by inputting an email and shared
-    password (which you must disseminate). Once a space opens up, every N (configurable)
-    minutes the next person in line receives an email. Once the desired spaces are
-    occupied again they receive another email as a courtsey notification. The email
-    functionality works for free and relies on use of a dedicated Google account.
+    password. Once a space opens up, every N minutes, the next person in line receives
+    an email. The email functionality works for free and relies on use of a dedicated
+    Google account.
 -   Allows for separately monitoring and waitlisting different types of parking spaces. Currently
     supports the following types: EV charger, handicap, compact, standard, motorcycle,
     and truck.
@@ -26,6 +27,7 @@ your endpoint.
 -   Persistent state for the parking spaces, waitlist and usage duration history is
     accomplished using minimal sqlite databases.
 -   App configuration is ergonomically defined in an `app-config.yaml` file.
+-   Website looks good on both mobile and desktop.
 -   As a Mkdocs plugin, it makes use of Mkdocs-Material for the frontend build, and so
     you can easily add static pages as markdown files and customize site aesthetics with
     tools from the Mkdocs ecosystem in `mkdocs.yml`. The default config includes a
