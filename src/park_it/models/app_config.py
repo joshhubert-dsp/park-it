@@ -53,6 +53,10 @@ class AppConfig(BaseModel):
             the site UI and email messages. Defaults to None.
         image (ImageFile | None, optional): Model for a descriptive image to display on
             the site, with required metadata. Defaults to None.
+        page_icon (str, optional): The Mkdocs Material stock icon to use for the monitor page in the
+            navigation sidebar. Search
+            https://squidfunk.github.io/mkdocs-material/reference/icons-emojis/#search
+            for all icons available. Defaults to "octicons/eye-24".
         db_echo (bool, optional): Whether SQLite operations should be echoed for
             debugging. Defaults to False.
         openapi_url (str | None, optional): Optional FastAPI OpenAPI path. Set to `None`
@@ -74,6 +78,7 @@ class AppConfig(BaseModel):
     waitlist_interval_minutes: PositiveInt = 20
     contact_email: EmailStr | None = None
     image: ImageFile | None = None
+    page_icon: str = "octicons/eye-24"
     db_echo: bool = False
     openapi_url: str | None = None
 
