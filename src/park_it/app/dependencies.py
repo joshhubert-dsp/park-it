@@ -31,7 +31,7 @@ from park_it.services.db.space_state_db import SpaceStateDatabase
 from park_it.services.db.space_usage_db import SpaceUsageDatabase
 from park_it.services.db.waitlist_db import WaitlistDatabase
 from park_it.services.email.emailer import Emailer, PrintDebugEmailer
-from park_it.services.email.gmailer import Gmailer, init_gmail
+from park_it.services.email.gmailer import Gmailer
 from park_it.services.job_scheduler import JobScheduler
 from park_it.services.sse_handler import SSEHandler
 
@@ -61,7 +61,7 @@ def get_emailer(google_token_path: FilePath | None = None) -> Emailer:
             "`google_token_path` is required to set up a functional email waitlist. "
             "If you want to test with the PrintDebugEmailer instead, set the env var `DEBUG_EMAILER`."
         )
-    return Gmailer(init_gmail(google_token_path))
+    return Gmailer(google_token_path)
 
 
 @lru_cache(maxsize=1)

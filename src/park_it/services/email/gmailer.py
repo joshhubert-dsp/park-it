@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import ssl
 from base64 import urlsafe_b64encode
 from dataclasses import dataclass
 from email.message import EmailMessage
@@ -68,6 +69,7 @@ def get_credentials(token_path: FilePath) -> Credentials:
 
 
 def init_gmail(token_path: FilePath) -> GmailResource:
+    logger.debug("initializing GmailResource")
     creds = get_credentials(token_path)
     return build("gmail", "v1", credentials=creds)
 
@@ -79,9 +81,23 @@ def send_gmail_msg(gmail: GmailResource, email_msg: EmailMessage) -> Message:
 
 @dataclass
 class Gmailer(Emailer):
-    """just log the email text to console."""
+    """Email sender that builds a fresh Gmail client for each send."""
 
-    gmail: GmailResource
+    token_path: FilePath
+
+    def _send(self, msg: EmailMessage) -> Message:
+        try:
+            return send_gmail_msg(init_gmail(self.token_path), msg)
+        except ssl.SSLError as e:
+            # The Gmail API client and underlying httplib2 transport can go stale after
+            # long idle periods. Rebuild the client and retry once on the observed EOF
+            # failure that occurs during token refresh / first post-idle send.
+            if "UNEXPECTED_EOF_WHILE_READING" not in str(e):
+                raise
+            logger.warning(
+                "Gmail send hit SSL EOF during refresh/send; rebuilding client and retrying once."
+            )
+            return send_gmail_msg(init_gmail(self.token_path), msg)
 
     def send_join_confirmation(
         self,
@@ -92,7 +108,7 @@ class Gmailer(Emailer):
     ) -> bool:
         msg = build_join_confirm_email(entry, waitlist_place, config, jinja_env)
         logger.debug(pformat(msg))
-        send_gmail_msg(self.gmail, msg)
+        self._send(msg)
         return True
 
     def send_leave_confirmation(
@@ -100,7 +116,7 @@ class Gmailer(Emailer):
     ) -> bool:
         msg = build_leave_confirm_email(entry, config, jinja_env)
         logger.debug(pformat(msg))
-        send_gmail_msg(self.gmail, msg)
+        self._send(msg)
         return True
 
     def notify_free_space(
@@ -108,7 +124,7 @@ class Gmailer(Emailer):
     ) -> bool:
         msg = build_space_free_email(entry, config, jinja_env)
         logger.debug(pformat(msg))
-        send_gmail_msg(self.gmail, msg)
+        self._send(msg)
         return True
 
     def notify_space_now_occupied(
@@ -116,7 +132,7 @@ class Gmailer(Emailer):
     ) -> bool:
         msg = build_space_occupied_email(entry, config, jinja_env)
         logger.debug(pformat(msg))
-        send_gmail_msg(self.gmail, msg)
+        self._send(msg)
         return True
 
 

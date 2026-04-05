@@ -50,7 +50,7 @@ async def join_waitlist(
         logger.debug("email joined waitlist already")
         fail_msg = Markup(
             "This email has already joined the waitlist. Check for a prior email "
-            f"from <b><u>{config.app_email}</u></b> with the details."
+            f"from <b>{config.app_email}</b> with the details."
         )
         return denial_response(request, fail_msg, templates)
 
@@ -63,7 +63,7 @@ async def join_waitlist(
         )
 
     success_msg = Markup(
-        f"<b><u>{entry.email}</u></b> joined the <b>{entry.space_type.upper()}</b> space waitlist: "
+        f"<b>{entry.email}</b> joined the <b>{entry.space_type.upper()}</b> space waitlist: "
         f"<b>{place_num}{get_place_int_suffix(place_num)}</b> in line. "
     )
     if req.confirmation_email:
@@ -101,7 +101,7 @@ async def leave_waitlist(
             entry=entry, config=config, jinja_env=templates.env
         )
 
-    success_msg = Markup(f"<b><u>{entry.email}</u></b> left the waitlist.")
+    success_msg = Markup(f"<b>{entry.email}</b> left the waitlist.")
     return success_response(request, success_msg, templates)
 
 
