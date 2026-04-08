@@ -3,8 +3,8 @@ from __future__ import annotations
 from collections.abc import Callable
 from typing import TYPE_CHECKING, Any
 
+from devtools import pformat
 from fastapi import Request, status
-from fastapi.exception_handlers import request_validation_exception_handler
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from loguru import logger
@@ -72,19 +72,30 @@ def get_job_ctx(request: Request) -> ScheduledJobContext:
 # --- APP LOGGING EXCEPTION HANDLERS ---
 
 
-async def log_request_validation_error(request: Request, exc: RequestValidationError):
-    logger.exception(
+async def log_request_validation_error(
+    request: Request, exc: RequestValidationError, log_payload: bool = True
+):
+    logger.error(
         f"RequestValidationError during {request.method} {request.url.path}: {exc.errors()}"
     )
-    # Delegate to FastAPI’s default handler for the exact same JSON shape
-    return await request_validation_exception_handler(request, exc)
+    if log_payload:
+        payload = await request.json()
+        logger.error(pformat(payload))
+
+    return JSONResponse(
+        content={"detail": "bad request payload"},
+        status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
+    )
+    # return await request_validation_exception_handler(request, exc)
 
 
 async def handle_validation_error(request: Request, exc: ValidationError):
     """just using this for now to report both request and response model validation
     failure. in prod, should probably remove and allow for default server error 500 for
     response error"""
-    logger.exception(f"A validation error occurred: {exc.errors()}")
+    logger.exception(
+        f"ValidationError during {request.method} {request.url.path}: {exc.errors()}"
+    )
     return JSONResponse(
         status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
         content={"detail": "\n".join([e["msg"] for e in exc.errors()])},

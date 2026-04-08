@@ -1,10 +1,9 @@
 from __future__ import annotations
 
 from inspect import signature
-from statistics import median
 from typing import Annotated, NamedTuple
 
-from devtools import pformat
+import numpy as np
 from fastapi import APIRouter, Request
 from fastapi.params import Depends
 from fastapi.responses import HTMLResponse
@@ -34,6 +33,9 @@ class MedianSpaceUsageDuration(NamedTuple):
     free: float
 
 
+DEBUG_COMPUTE_MEAN = True
+
+
 def _compute_space_usage(
     type: SpaceType,
     space_usage_db: SpaceUsageDatabase,
@@ -52,9 +54,19 @@ def _compute_space_usage(
         # if there are no entries for time occupied/free for this space type so far
         return None, None
 
-    occupied = float(median([occ.duration_sec for occ in all_occupied]))
-    free = float(median([free.duration_sec for free in all_free]))
-    median_usage = MedianSpaceUsageDuration(occupied, free)
+    occupied_med = float(np.median([occ.duration_sec for occ in all_occupied]))
+    free_med = float(np.median([free.duration_sec for free in all_free]))
+    logger.debug(
+        f"{type} num for median - occupied: {len(all_occupied)}, free: {len(all_free)}"
+    )
+    logger.debug(f"{type} median - occupied: {occupied_med}, free: {free_med}")
+
+    if DEBUG_COMPUTE_MEAN:
+        occupied_mean = float(np.mean([occ.duration_sec for occ in all_occupied]))
+        free_mean = float(np.mean([free.duration_sec for free in all_free]))
+        logger.debug(f"{type} mean - occupied: {occupied_mean}, free: {free_mean}")
+
+    median_usage = MedianSpaceUsageDuration(occupied_med, free_med)
 
     if wait_len is not None and num_spaces > 0:
         wait_time = wait_len * (median_usage.occupied + median_usage.free) / num_spaces
@@ -113,7 +125,7 @@ def _create_update_space_state_endpoint(
         deps: Annotated[AppDependencies, Depends(get_app_deps)],
         job_ctx: Annotated[ScheduledJobContext, Depends(get_job_ctx)],
     ):
-        logger.debug(pformat(request))
+        # logger.debug(pformat(request))
 
         prev_space = deps.space_state_db.get(request.sensor_id())
         updated_space = deps.space_state_db.upsert(request.to_model())
